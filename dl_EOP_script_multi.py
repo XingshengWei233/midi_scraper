@@ -4,6 +4,8 @@ import json
 import os
 import argparse
 from multiprocessing import Pool
+import pickle as pk
+
 
 HEADERS = {
         'User-Agent': "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:100.0) Gecko/20100101 Firefox/100.0",
@@ -45,18 +47,38 @@ def scrape_one(url_tuple):
             pdf = requests.get(url=dl_page,headers=HEADERS)
             with open(os.path.join(SAVE_DIR,file_name), 'wb') as f:
                 f.write(pdf.content)
+
+    log_path = os.path.join(SAVE_DIR,'log.pkl')
+    with open(log_path, "rb") as f:
+        log = pk.load(f)
+    with open(log_path, "wb") as f:
+        log.append(url_tuple[0])
+        pk.dump(log,f)
+
     print(f'number: {url_tuple[0]} done')
 
 
 def get_num_score_from_EOP(begin, end):
+    
+    log_path = os.path.join(SAVE_DIR,'log.pkl')
+    if not os.path.exists(log_path):
+        with open(log_path, "wb") as f:
+            pk.dump([0],f)
+    with open(log_path, "rb") as f:
+        log = pk.load(f)
+        print(log)
 
     all_url_tuples = []
     for i in range(begin,end): #14212
         url = f"https://www.everyonepiano.cn/PDF-{i}.html"
         url_tuple = (i,url)
         all_url_tuples.append(url_tuple)
+    for index in log:
+        all_url_tuples[index] = (-1,'')
+    for i,url_tuple in reversed(list(enumerate(all_url_tuples))):
+        if url_tuple[0] == -1: all_url_tuples.pop(i)
 
-    with Pool(4) as p:
+    with Pool(10) as p:
         p.map(scrape_one, all_url_tuples)
 
 
