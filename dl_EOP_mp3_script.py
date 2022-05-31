@@ -1,6 +1,5 @@
 import requests  
 from bs4 import BeautifulSoup
-import json  
 import os
 import argparse
 from multiprocessing import Pool
