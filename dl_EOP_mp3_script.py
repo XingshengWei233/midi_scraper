@@ -48,8 +48,11 @@ def scrape_one(url_tuple):
         print('file_name:', file_name)
         #print('dl_page:', dl_page)
         mp3 = requests.get(url=dl_page,headers=HEADERS)
-        with open(os.path.join(SAVE_DIR,file_name), 'wb') as f:
-            f.write(mp3.content)
+        try:
+            with open(os.path.join(SAVE_DIR,file_name), 'wb') as f:
+                f.write(mp3.content)
+        except:
+            print('unable to save: ',os.path.join(SAVE_DIR,file_name))
 
     log_path = os.path.join(SAVE_DIR,'log.pkl')
     with open(log_path, "rb") as f:

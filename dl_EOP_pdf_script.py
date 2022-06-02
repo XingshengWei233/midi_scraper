@@ -77,7 +77,7 @@ def get_num_score_from_EOP(begin, end):
     for i,url_tuple in reversed(list(enumerate(all_url_tuples))):
         if url_tuple[0] == -1: all_url_tuples.pop(i)
 
-    with Pool(10) as p:
+    with Pool(30) as p:
         p.map(scrape_one, all_url_tuples)
 
 
