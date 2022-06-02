@@ -44,8 +44,11 @@ def scrape_one(url_tuple):
             dl_page = 'https://www.everyonepiano.cn' + item["href"]
             #print(dl_page)
             pdf = requests.get(url=dl_page,headers=HEADERS)
-            with open(os.path.join(SAVE_DIR,file_name), 'wb') as f:
-                f.write(pdf.content)
+            try: 
+                with open(os.path.join(SAVE_DIR,file_name), 'wb') as f:
+                    f.write(pdf.content)
+            except:
+                print('unable to save: ',file_name)
 
     log_path = os.path.join(SAVE_DIR,'log.pkl')
     with open(log_path, "rb") as f:
