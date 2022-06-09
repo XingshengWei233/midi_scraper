@@ -16,7 +16,7 @@ SAVE_DIR = '/media/xingshengwei/Seagate Portable Drive/scrape/EOP_data_mp3'
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--begin', type=int, default=0) 
-    parser.add_argument('--end', type=int, default=14212) 
+    parser.add_argument('--end', type=int, default=14246) 
     return parser.parse_args()
 
 
